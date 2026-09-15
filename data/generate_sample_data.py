@@ -153,6 +153,11 @@ def generate():
 
         invoice_id += 1
 
+    with open("data/accounts.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["account_code", "account_name", "channel"])
+        writer.writerows(ACCOUNTS)
+
     with open("data/invoices.csv", "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=invoices[0].keys())
         writer.writeheader()

@@ -64,6 +64,20 @@ edge cases before moving to the next. See commit history for progression.
 - [x] Schema design
 - [x] Synthetic data generator with real edge cases
 - [x] Core matching engine (pandas)
-- [ ] SQL-backed version (load into SQLite/Postgres, matching via SQL)
+- [x] SQL-backed version (SQLite, matching via CTE + CASE WHEN + NOT EXISTS) — output validated identical to the pandas version (50 Paid / 15 Unpaid / 15 Short Pay / 10 Overpaid / 10 Duplicate / 10 Unapplied)
+- [ ] Duplicate detection rewritten with a window function (current version uses CASE WHEN with exact-multiple checks — works, but a `COUNT()/SUM() OVER (PARTITION BY ...)` version is the more idiomatic SQL approach, added as a learning exercise)
 - [ ] PySpark version for scale
 - [ ] Power BI / dashboard reporting layer
+
+## Running the SQL-backed version
+
+```bash
+python db/setup_db.py           # builds db/reconcile.db from schema/schema.sql + data/*.csv
+python src/sql_match_engine.py  # runs sql/reconciliation_query.sql + sql/unapplied_payments.sql
+```
+
+The core logic lives entirely in `sql/reconciliation_query.sql` (a CTE
+pre-aggregates payments per PO, then a `CASE WHEN` classifies each invoice)
+and `sql/unapplied_payments.sql` (a `NOT EXISTS` correlated subquery finds
+payments with no matching invoice). Python only opens the database, runs
+the SQL, and writes the CSV output.
