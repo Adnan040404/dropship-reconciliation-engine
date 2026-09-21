@@ -1,0 +1,16 @@
+{
+  "status_counts": {
+    "Paid": 12,
+    "Unpaid": 3,
+    "Short Pay": 4,
+    "Overpaid": 2,
+    "Duplicate": 1
+  },
+  "explained_by_deductions": 2,
+  "unapplied_lines": 1,
+  "deduction_lines": 3,
+  "rejected_invoice_rows": 0,
+  "rejected_payment_rows": 0,
+  "invoice_rows": 22,
+  "payment_rows": 24
+}

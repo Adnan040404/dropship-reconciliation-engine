@@ -19,11 +19,11 @@ SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "..", "schema", "schema.sq
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
 
-def build_database():
-    if os.path.exists(DB_PATH):
-        os.remove(DB_PATH)  # always rebuild fresh, so this script is safely re-runnable
+def build_database(db_path=DB_PATH):
+    if os.path.exists(db_path):
+        os.remove(db_path)  # always rebuild fresh, so this script is safely re-runnable
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(db_path)
     conn.execute("PRAGMA foreign_keys = ON;")
 
     with open(SCHEMA_PATH) as f:
@@ -45,14 +45,14 @@ def build_database():
         print(f"{table}: {count} rows loaded")
 
     conn.close()
-    print(f"\nDatabase built at {DB_PATH}")
+    print(f"\nDatabase built at {db_path}")
 
 
 def load_csv(conn, filename, table, columns):
     path = os.path.join(DATA_DIR, filename)
     if not os.path.exists(path):
         raise FileNotFoundError(
-            f"{path} not found — run `python data/generate_sample_data.py` first."
+            f"{path} not found â€” run `python data/generate_sample_data.py` first."
         )
 
     placeholders = ", ".join("?" for _ in columns)
@@ -64,7 +64,7 @@ def load_csv(conn, filename, table, columns):
         rows = [tuple(row[c] for c in columns) for row in reader]
 
     if not rows:
-        raise ValueError(f"{filename} loaded 0 rows — check the file isn't empty/malformed.")
+        raise ValueError(f"{filename} loaded 0 rows â€” check the file isn't empty/malformed.")
 
     conn.executemany(insert_sql, rows)
 

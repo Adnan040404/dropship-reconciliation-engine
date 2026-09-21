@@ -1,0 +1,61 @@
+# One block per account. Everything that differs between accounts lives here, so
+# adding an account means adding a block, not changing the matching code.
+#
+# header_row   1-based row of the file that holds the column names
+# po_regex     removes a suffix/prefix from PO numbers before matching (case-insensitive)
+# tolerance    differences up to this many dollars count as an exact match
+# payments_are_negative
+#              true when the payment export shows money received as negative numbers
+# deductions   category = regex matched against the payment description
+
+[accounts.AC1000]
+name = "Home Improvement Retailer A (example)"
+
+[accounts.AC1000.invoices]
+header_row = 1
+po = "Order #"
+amount = "Invoice Amount"
+date = "Invoice Date"
+
+[accounts.AC1000.payments]
+header_row = 1
+po = "PO Number"
+amount = "Net Paid"
+date = "Paid On"
+description = "Description"
+
+[accounts.AC1000.rules]
+po_regex = "[-_x]\\d+$"        # store suffix such as -1 or _782
+tolerance = 0.01
+payments_are_negative = false
+
+[accounts.AC1000.deductions]
+Freight = "freight|shipping"
+"Damaged goods" = "damage|defect"
+
+
+[accounts.AC2000]
+name = "Big Box Retailer B (example)"
+
+[accounts.AC2000.invoices]
+header_row = 1
+po = "PO"
+amount = "Total"
+date = "Date"
+
+[accounts.AC2000.payments]
+header_row = 4                 # three lines of report header above the column names
+po = "Invoice Ref"
+amount = "Amount"
+date = "Posting Date"
+description = "Reason"
+
+[accounts.AC2000.rules]
+po_regex = ""
+tolerance = 0.05
+payments_are_negative = true   # money received is exported as a negative number
+
+[accounts.AC2000.deductions]
+Freight = "freight"
+Commission = "commission|referral"
+Fees = "fee|charge"
