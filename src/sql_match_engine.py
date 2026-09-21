@@ -14,6 +14,7 @@ import csv
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "db", "reconcile.db")
 SQL_DIR = os.path.join(os.path.dirname(__file__), "..", "sql")
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
 def run_query_to_csv(conn, sql_filename, output_filename):
@@ -39,7 +40,7 @@ def main():
     conn = sqlite3.connect(DB_PATH)
 
     columns, rows = run_query_to_csv(
-        conn, "reconciliation_query.sql", "sql_reconciliation_report.csv"
+        conn, "reconciliation_query.sql", os.path.join(ROOT, "sql_reconciliation_report.csv")
     )
     status_idx = columns.index("status")
     status_counts = {}
@@ -52,7 +53,7 @@ def main():
         print(f"{status:12s} {count}")
 
     _, unapplied_rows = run_query_to_csv(
-        conn, "unapplied_payments.sql", "sql_unapplied_payments.csv"
+        conn, "unapplied_payments.sql", os.path.join(ROOT, "sql_unapplied_payments.csv")
     )
     print(f"\nUnapplied payments (no matching invoice): {len(unapplied_rows)}")
 

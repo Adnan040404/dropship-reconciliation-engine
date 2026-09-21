@@ -22,7 +22,11 @@ together. Documented here deliberately, not hidden, since "know the limits
 of your own heuristic" is the actual skill being demonstrated.
 """
 
+import os
+
 import pandas as pd
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TOLERANCE = 0.01  # cents-level rounding tolerance
 
@@ -48,9 +52,10 @@ def classify(invoice_amount: float, total_paid: float, payment_count: int) -> st
     return "Overpaid"
 
 
-def run(invoices_path="data/invoices.csv", payments_path="data/payments.csv",
-        report_path="reconciliation_report.csv",
-        unapplied_path="unapplied_payments.csv"):
+def run(invoices_path=os.path.join(ROOT, "data", "invoices.csv"),
+        payments_path=os.path.join(ROOT, "data", "payments.csv"),
+        report_path=os.path.join(ROOT, "reconciliation_report.csv"),
+        unapplied_path=os.path.join(ROOT, "unapplied_payments.csv")):
 
     invoices = pd.read_csv(invoices_path)
     payments = pd.read_csv(payments_path)

@@ -13,10 +13,12 @@ All data is fake. Account codes are generic stand-ins, not real client data.
 """
 
 import csv
+import os
 import random
 from datetime import date, timedelta
 
 random.seed(42)
+HERE = os.path.dirname(os.path.abspath(__file__))  # write next to this script
 
 ACCOUNTS = [
     ("AC1000", "Home Improvement Retailer A", "Marketplace"),
@@ -153,17 +155,17 @@ def generate():
 
         invoice_id += 1
 
-    with open("data/accounts.csv", "w", newline="") as f:
+    with open(os.path.join(HERE, "accounts.csv"), "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["account_code", "account_name", "channel"])
         writer.writerows(ACCOUNTS)
 
-    with open("data/invoices.csv", "w", newline="") as f:
+    with open(os.path.join(HERE, "invoices.csv"), "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=invoices[0].keys())
         writer.writeheader()
         writer.writerows(invoices)
 
-    with open("data/payments.csv", "w", newline="") as f:
+    with open(os.path.join(HERE, "payments.csv"), "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=payments[0].keys())
         writer.writeheader()
         writer.writerows(payments)
