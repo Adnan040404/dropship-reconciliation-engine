@@ -1,5 +1,7 @@
 # Dropship Reconciliation Engine
 
+![tests](https://github.com/Adnan040404/dropship-reconciliation-engine/actions/workflows/tests.yml/badge.svg)
+
 Matches a retailer's invoices against its payments, account by account, and tells you
 which invoices are unpaid, short-paid, overpaid or paid twice, which payments belong to
 no invoice, and which deductions were taken. The output is an Excel report.
